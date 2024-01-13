@@ -33,7 +33,7 @@ class BusinessToCustomer:
 		    "QueueTimeOutURL": self.queue_timeout_url,
 		    "Remarks": self.remarks,
 		    "Occassion": "",
-		  }
+		}
 
 		r = requests.get(self.business_to_customer_url, data=payload)
 		json_response = r.json()

@@ -29,20 +29,19 @@ class TransactionQuery:
 
 		payload = {
 		    "Initiator": self.initiator,
-		    "SecurityCredential": self.security_credential,
+		    "SecurityCredential": "VboeDPyXV3hwaAg4IiL+sbXQREcDXOmEjKgAA4YKH8qvwUVBe/jDekBZwZrywP9dSMpojP62nQ6pPKQ033Rv09JvcV8Ta8wpcNRybnNh6KRTSuDFu8tflpAUUc+OLSp3JJtbZsRaMbGT044NQnw+fW5diEeRQ4vFyXRrfa+kH0Zj89Jl10cprwU2zwODpUFHAoFuEO4UKYN2/FQ5Ud1I8asuiQbb2EFAv2YqUYUq8LUrFSs0gdRKuq11D0NJqMUMTgStOs4eOg9/8JUkmBfTZqk83AO59t09EEwuliopO1EL6tgI5jVNBtLoSmCtDC1u6CCcKKGAXDAAMmW2z7g0cg==",#self.security_credential,
 		    "CommandID": "TransactionStatusQuery",
+			"OriginatorConversationID":os.getenv('MPESA_TRANSACTION_ORIGINATOR_CONVERSATION_ID'),
 		    "TransactionID": transaction_code,
 		    "PartyA": self.party_a,
 		    "IdentifierType": self.identifier_type,
 		    "ResultURL": self.result_url,
 		    "QueueTimeOutURL": self.queue_timeout_url,
 		    "Remarks": self.remarks,
-		    "Occassion": "null",
+		    "Occassion": "OK",
 		 }
-		
-		print(payload)
 
-		r = requests.post(self.trans_status_url, data=payload, headers=headers)
+		r = requests.post(self.trans_status_url, json=payload, headers=headers)
 		json_response = r.json()
 		print(json_response)
 		return json_response

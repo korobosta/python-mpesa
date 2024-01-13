@@ -8,9 +8,9 @@ class TestTransactionQuery(unittest.TestCase):
 	def test_transaction_status_query(self):
 		response_code = None
 		transaction_code = "OEI2AK4Q16"
-		repsonse=self.transaction_status_query.transaction_query(transaction_code)
-		if 'ResponseCode' in repsonse:
-			response_code = repsonse["ResponseCode"]
+		response=self.transaction_status_query.transaction_query(transaction_code)
+		if 'ResponseCode' in response:
+			response_code = response["ResponseCode"]
 		self.assertEqual(response_code, '0')
 
 	def test_extraction_of_response(self):
