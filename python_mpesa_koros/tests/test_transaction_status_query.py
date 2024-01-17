@@ -1,5 +1,5 @@
 import unittest
-from transaction_query import TransactionQuery
+from src.transaction_query import TransactionQuery
 import json
 
 class TestTransactionQuery(unittest.TestCase):

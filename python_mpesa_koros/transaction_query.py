@@ -1,27 +1,43 @@
 import requests
 import os
 from dotenv import load_dotenv
-from access_token import AccessToken
+from .access_token import AccessToken
 load_dotenv()
-from utils import generate_security_credential
+from .utils import generate_security_credential
 
 class TransactionQuery:
 	def __init__(self):
-		self.trans_status_url=os.getenv('MPESA_TRANSACTION_QUERY_URL')
-		self.initiator=os.getenv('MPESA_INITIATOR')
-		self.party_a=os.getenv('MPESA_TRANSACTION_QUERY_PARTY_A')
-		self.result_url=os.getenv('MPESA_TRANSACTION_QUERY_RESULT_URL')
-		self.queue_timeout_url=os.getenv('MPESA_TRANSACTION_QUERY_QUEUE_TIMEOUT_URL')
-		self.remarks=os.getenv('MPESA_TRANSACTION_QUERY_REMARKS')
-		password=os.getenv('MPESA_PASSWORD')
-		self.command_id=os.getenv('MPESA_TRANSACTION_QUERY_COMMAND_ID')
-		path=os.getenv('MPESA_CERT_PATH')
-		self.identifier_type = os.getenv('MPESA_TRANSACTION_QUERY_IDENTIFIER_TYPE')
-		self.security_credential=generate_security_credential(password,path)
+		if os.getenv('MPESA_ENV') == 1:
+			self.trans_status_url=os.getenv('MPESA_LIVE_TRANSACTION_QUERY_URL')
+			self.initiator=os.getenv('MPESA_LIVE_INITIATOR')
+			self.party_a=os.getenv('MPESA_LIVE_TRANSACTION_QUERY_PARTY_A')
+			self.result_url=os.getenv('MPESA_LIVE_TRANSACTION_QUERY_RESULT_URL')
+			self.queue_timeout_url=os.getenv('MPESA_LIVE_TRANSACTION_QUERY_QUEUE_TIMEOUT_URL')
+			self.remarks=os.getenv('MPESA_LIVE_TRANSACTION_QUERY_REMARKS')
+			self.password=os.getenv('MPESA_LIVE_PASSWORD')
+			self.command_id=os.getenv('MPESA_LIVE_TRANSACTION_QUERY_COMMAND_ID')
+			self.identifier_type = os.getenv('MPESA_LIVE_TRANSACTION_QUERY_IDENTIFIER_TYPE')
+		else:
+			self.trans_status_url=os.getenv('MPESA_TEST_TRANSACTION_QUERY_URL')
+			self.initiator=os.getenv('MPESA_TEST_INITIATOR')
+			self.party_a=os.getenv('MPESA_TEST_TRANSACTION_QUERY_PARTY_A')
+			self.result_url=os.getenv('MPESA_TEST_TRANSACTION_QUERY_RESULT_URL')
+			self.queue_timeout_url=os.getenv('MPESA_TEST_TRANSACTION_QUERY_QUEUE_TIMEOUT_URL')
+			self.remarks=os.getenv('MPESA_TEST_TRANSACTION_QUERY_REMARKS')
+			self.password=os.getenv('MPESA_TEST_PASSWORD')
+			self.command_id=os.getenv('MPESA_TEST_TRANSACTION_QUERY_COMMAND_ID')
+			self.identifier_type = os.getenv('MPESA_TEST_TRANSACTION_QUERY_IDENTIFIER_TYPE')
 
-	def transaction_query(self,transaction_code):
+		self.security_credential=generate_security_credential(self.password)
+
+	def transaction_query(self,transaction_code,remarks="",occassion = ""):
+		if occassion == "":
+			occassion = "OK"
+		if remarks == "":
+			remarks = "Transaction status query for "+transaction_code
 		token = AccessToken()
 		access_token=token.get_access_token()
+		
 		headers = {
 		  'Content-Type': 'application/json',
 		  "Authorization": "Bearer %s" % access_token
@@ -29,16 +45,15 @@ class TransactionQuery:
 
 		payload = {
 		    "Initiator": self.initiator,
-		    "SecurityCredential": "VboeDPyXV3hwaAg4IiL+sbXQREcDXOmEjKgAA4YKH8qvwUVBe/jDekBZwZrywP9dSMpojP62nQ6pPKQ033Rv09JvcV8Ta8wpcNRybnNh6KRTSuDFu8tflpAUUc+OLSp3JJtbZsRaMbGT044NQnw+fW5diEeRQ4vFyXRrfa+kH0Zj89Jl10cprwU2zwODpUFHAoFuEO4UKYN2/FQ5Ud1I8asuiQbb2EFAv2YqUYUq8LUrFSs0gdRKuq11D0NJqMUMTgStOs4eOg9/8JUkmBfTZqk83AO59t09EEwuliopO1EL6tgI5jVNBtLoSmCtDC1u6CCcKKGAXDAAMmW2z7g0cg==",#self.security_credential,
+		    "SecurityCredential": self.security_credential,
 		    "CommandID": "TransactionStatusQuery",
-			"OriginatorConversationID":os.getenv('MPESA_TRANSACTION_ORIGINATOR_CONVERSATION_ID'),
 		    "TransactionID": transaction_code,
 		    "PartyA": self.party_a,
 		    "IdentifierType": self.identifier_type,
 		    "ResultURL": self.result_url,
 		    "QueueTimeOutURL": self.queue_timeout_url,
-		    "Remarks": self.remarks,
-		    "Occassion": "OK",
+		    "Remarks": remarks,
+		    "Occassion": occassion,
 		 }
 
 		r = requests.post(self.trans_status_url, json=payload, headers=headers)
