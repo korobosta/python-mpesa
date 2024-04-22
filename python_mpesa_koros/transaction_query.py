@@ -1,13 +1,13 @@
 import requests
 import os
 from dotenv import load_dotenv
-from .access_token import AccessToken
+from access_token import AccessToken
 load_dotenv()
-from .utils import generate_security_credential
+from utils import generate_security_credential
 
 class TransactionQuery:
 	def __init__(self):
-		if os.getenv('MPESA_ENV') == 1:
+		if os.getenv('MPESA_ENV') == "1":
 			self.trans_status_url=os.getenv('MPESA_LIVE_TRANSACTION_QUERY_URL')
 			self.initiator=os.getenv('MPESA_LIVE_INITIATOR')
 			self.party_a=os.getenv('MPESA_LIVE_TRANSACTION_QUERY_PARTY_A')

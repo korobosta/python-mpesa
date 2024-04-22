@@ -1,12 +1,12 @@
 import requests
 import os
 from dotenv import load_dotenv
-from .access_token import AccessToken
-from .utils import generate_security_credential
+from access_token import AccessToken
+from utils import generate_security_credential
 
 class BusinessToCustomer:
 	def __init__(self):
-		if os.getenv('MPESA_ENV') == 1:
+		if os.getenv('MPESA_ENV') == "1":
 			self.business_to_customer_url=os.getenv('MPESA_LIVE_B2C_URL')
 			self.initiator=os.getenv('MPESA_LIVE_INITIATOR')
 			self.party_a=os.getenv('MPESA_LIVE_TRANSACTION_QUERY_PARTY_A')
@@ -54,10 +54,10 @@ class BusinessToCustomer:
 		    "ResultURL": self.result_url,
 		    "QueueTimeOutURL": self.queue_timeout_url,
 		    "Remarks": remarks,
-		    "Occassion": "",
+		    "Occassion": occasion,
 		}
 
-		r = requests.get(self.business_to_customer_url, json=payload, headers=headers)
+		r = requests.post(self.business_to_customer_url, json=payload, headers=headers)
 		json_response = r.json()
 		print(json_response)
 		return json_response

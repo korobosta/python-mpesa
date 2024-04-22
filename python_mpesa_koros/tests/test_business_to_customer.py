@@ -1,4 +1,6 @@
 import unittest
+import sys
+sys.path.append("..") 
 from business_to_customer import BusinessToCustomer
 import json
 
@@ -9,7 +11,7 @@ class TestBusinessToCustomer(unittest.TestCase):
 
 	def test_business_to_customer(self):
 		business_to_customer_init = self.initialize_b2c()
-		phone_number = ""
+		phone_number = "254713887070"
 		amount = 1
 		remarks = "Send Money to Customer"
 		occasion = "OK"

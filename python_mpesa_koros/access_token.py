@@ -5,7 +5,7 @@ load_dotenv()
 
 class AccessToken:
 	def __init__(self):
-		if os.getenv('MPESA_ENV') == 1:
+		if os.getenv('MPESA_ENV') == "1":
 			self.consumer_key=os.getenv('MPESA_LIVE_CONSUMER_KEY')
 			self.consumer_secret=os.getenv('MPESA_LIVE_CONSUMER_SECRET')
 			self.token_url=os.getenv('MPESA_LIVE_TOKEN_URL')

@@ -1,5 +1,7 @@
 import unittest
-from src.transaction_query import TransactionQuery
+import sys
+sys.path.append("..") 
+from transaction_query import TransactionQuery
 import json
 
 class TestTransactionQuery(unittest.TestCase):
@@ -7,7 +9,7 @@ class TestTransactionQuery(unittest.TestCase):
 
 	def test_transaction_status_query(self):
 		response_code = None
-		transaction_code = "OEI2AK4Q16"
+		transaction_code = "SDM4XOS3YW"
 		response=self.transaction_status_query.transaction_query(transaction_code)
 		if 'ResponseCode' in response:
 			response_code = response["ResponseCode"]

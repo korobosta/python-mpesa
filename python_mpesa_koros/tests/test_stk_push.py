@@ -1,9 +1,13 @@
+# from ..customer_to_business import CustomerToBusiness
+
+import sys
+sys.path.append("..")  # Add parent directory to Python path
 from customer_to_business import CustomerToBusiness
 
 import unittest
 
 class TestStkPush(unittest.TestCase):
-	def test_access_token(self):
+	def test_stk_push(self):
 		response_code = None
 		amount = 1
 		phone = "254713887070"

@@ -4,7 +4,7 @@ import requests
 import os
 
 from dotenv import load_dotenv
-from .access_token import AccessToken
+from access_token import AccessToken
 load_dotenv()
 
 
@@ -14,7 +14,7 @@ class CustomerToBusiness:
 			transaction_description = "Payment REquest for Bill Reference "+bill_reference
 		time = datetime.datetime.now()
 		timestamp = time.strftime('%Y%m%d%H%M%S')
-		if os.getenv('MPESA_ENV') == 1:
+		if os.getenv('MPESA_ENV_1') == "1":
 			api_url = os.getenv('MPESA_LIVE_CUSTOMER_TO_BUSINESS_URL')
 			data = os.getenv('MPESA_LIVE_BUSINESS_SHORTCODE') + os.getenv('MPESA_LIVE_PASSKEY') + timestamp
 			callback_url = os.getenv('MPESA_LIVE_CALLBACK_URL')
@@ -28,7 +28,7 @@ class CustomerToBusiness:
 		password = encoded_string.decode('utf-8')
 		token = AccessToken()
 		access_token=token.get_access_token()
-		headers = { "Authorization": "Bearer %s" % access_token }
+		headers = {"Authorization": "Bearer %s" % access_token }
 		request = {
             "BusinessShortCode": busines_shortcode,
             "Password": password,

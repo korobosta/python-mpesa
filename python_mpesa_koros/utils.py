@@ -5,10 +5,11 @@ import os
 
 
 def generate_security_credential(initiator_password) -> str:
-    if os.getenv('MPESA_ENV') == 1:
-        path='./certs/ProductCertificate.cer'
+    current_dir = os.path.dirname(__file__)
+    if os.getenv('MPESA_ENV') == "1":
+        path=os.path.join(current_dir, 'certs', 'ProductionCertificate.cer')
     else:
-        path='./certs/SandboxCertificate.cer'
+        path=os.path.join(current_dir, 'certs', 'SandboxCertificate.cer')
     """
     Generates security credentials for C2B, B2C, B2B, REVERSAL and Transaction status post requests.
     :param inititator_password: Password for the organization initiating the transaction, provided by safaricom.
